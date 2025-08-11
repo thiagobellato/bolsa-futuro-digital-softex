@@ -12,7 +12,9 @@
 # nome = 'Thiago' #variavel string
 # email = 'tfbellato@hotmail.com' #variavel string
 # teveLucro = True #variavel boolean
-# pi = 3.14159265
+
+pi = 3.14159265
+print(f"{pi:.2f}")
 
 # print(f"O Faturamento foi de R${faturamento:.2f}")
 # print(f"Os custos foram de R${custo:.2f}")
@@ -46,19 +48,33 @@ print(emailCliente)
 emailCliente = emailCliente.lower()
 print(emailCliente)
 
-#find
+#find (posição de um caracter específico)
 print(emailCliente.find("@"))#-1 quando não encontrado
 
 #tamanho
 print(len(emailCliente))
 print(len(nomeCliente))
 
-#buscar
+#pegar um caracter
 print((emailCliente[0]))
 print((nomeCliente[0]))
 
+#pegar um caracter do final para o incio
+print((emailCliente[-1]))
+print((nomeCliente[-1]))
 
-# # print(f"{pi:.2f}")
+#solicitar informação a partir de um ponto
+print((emailCliente[:5]))
+print((nomeCliente[:3]))
+
+#solicitar informação a partir de um ponto até um outro ponto
+print((emailCliente[1:5]))
+print((nomeCliente[1:3]))
+
+#replace (substitui uma informação dentro da string)
+novoEmail = emailCliente.replace("gmail.com" , "hotmail.com")
+print (novoEmail)
+
 # # int ("Números Inteiros")
 # # float ("Números Reais")
 # # complex
