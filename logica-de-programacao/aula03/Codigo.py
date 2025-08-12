@@ -1,79 +1,44 @@
-# faturamento = 1500 #variavel int
-# custo = 750.25 #variavel float
-# novasVendas = 100
-# imposto = faturamento * 0.1
-# print (faturamento - imposto)
-# faturamento += novasVendas
-# print (faturamento)
-# imposto = faturamento * 0.14
-# lucro = faturamento - custo - imposto
-# margemLucro = lucro/faturamento
+faturamento = 1500  # variavel int
+custo = 750.25  # variavel float
+novasVendas = 100
+imposto = faturamento * 0.1
+lucro = (faturamento) - (custo)
 
-# nome = 'Thiago' #variavel string
-# email = 'tfbellato@hotmail.com' #variavel string
-# teveLucro = True #variavel boolean
+print(faturamento - imposto)
 
-pi = 3.14159265
-print(f"{pi:.2f}")
+faturamento += novasVendas
 
-# print(f"O Faturamento foi de R${faturamento:.2f}")
-# print(f"Os custos foram de R${custo:.2f}")
-# print(f"O lucro final foi de R${lucro:.2f}")
-# print(f"A carga tributária foi de R${imposto:.2f}")
-# print(f"A margem de lucro foi de {margemLucro:.2f}")
+print(faturamento)
 
-# #mod = sobra da divisão
+imposto = faturamento * 0.14
+lucro = faturamento - custo - imposto
+margemLucro = lucro / faturamento
 
-# tempoContrato = 170
-# tempoAnos = tempoContrato / 12
-# print("Tempo em anos",int(tempoAnos))
-# tempoMeses = (tempoContrato % 12)
-# print(f"Tempo em meses {tempoMeses}")
+nome = "Thiago"  # variavel string
+email = "tfbellato@hotmail.com"  # variavel string
+teveLucro = True  # variavel boolean
 
-# faturamento = 1000
-# custo = 700
-# lucro = faturamento - custo
+print(f"O Faturamento foi de R${faturamento:.2f}")
+print(f"Os custos foram de R${custo:.2f}")
+print(f"O lucro final foi de R${lucro:.2f}")
+print(f"A carga tributária foi de R${imposto:.2f}")
+print(f"A margem de lucro foi de {margemLucro:.2f}")
 
-# print(f"Faturamento da empresa: R${faturamento:.2f}, Custo: R${custo:.2f}, Lucro: R${lucro:.2f}")
-nomeCliente = "João"
-emailCliente = "joao@Gmail.cOm"
+# mod = sobra da divisão
 
-print(emailCliente)
+tempoContrato = 170
+tempoAnos = tempoContrato / 12
+print("Tempo em anos", int(tempoAnos))
+tempoMeses = tempoContrato % 12
+print(f"Tempo em meses {tempoMeses}")
 
-#manipulação de str (maiusculo)
-emailCliente = emailCliente.upper()
-print(emailCliente)
+faturamento = 1000
+custo = 700
+lucro = faturamento - custo
 
-#manipulação de str (minusculo)
-emailCliente = emailCliente.lower()
-print(emailCliente)
-
-#find (posição de um caracter específico)
-print(emailCliente.find("@"))#-1 quando não encontrado
-
-#tamanho
-print(len(emailCliente))
-print(len(nomeCliente))
-
-#pegar um caracter
-print((emailCliente[0]))
-print((nomeCliente[0]))
-
-#pegar um caracter do final para o incio
-print((emailCliente[-1]))
-print((nomeCliente[-1]))
-
-#solicitar informação a partir de um ponto
-print((emailCliente[:5]))
-print((nomeCliente[:3]))
-
-#solicitar informação a partir de um ponto até um outro ponto
-print((emailCliente[1:5]))
-print((nomeCliente[1:3]))
-
-#replace (substitui uma informação dentro da string)
-novoEmail = emailCliente.replace("gmail.com" , "hotmail.com")
-print (novoEmail)
+print(
+    f"Faturamento da empresa: R${faturamento:.2f}, Custo: R${custo:.2f}, Lucro: R${lucro:.2f}"
+)
 
 # # int ("Números Inteiros")
 # # float ("Números Reais")
