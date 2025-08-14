@@ -1,10 +1,13 @@
-custoIngresso = 10
-ingressosVendidos = 500
-valorBruto = custoIngresso * ingressosVendidos
-taxa = 10**2
-valorReal = valorBruto - taxa
+custo_ingresso = 10
+ingressos_vendidos = 500
+valor_bruto = custo_ingresso * ingressos_vendidos
+taxa = 0.1
+valor_liquido = valor_bruto - (valor_bruto * taxa)
 
-
-print ("O Valor Bruto recebido de ingressos vendidos foi R$",valorBruto)
-print ("O Valor Real recebido de ingressos vendidos foi R$",valorReal)
-
+print(
+    f"Custo do ingresso: R${custo_ingresso}\n"
+    f"Ingressos vendidos: {ingressos_vendidos}\n"
+    f"Valor bruto: R${valor_bruto}\n"
+    f"Taxa: {taxa * 100}%\n"
+    f"Valor líquido: R${valor_liquido}"
+)

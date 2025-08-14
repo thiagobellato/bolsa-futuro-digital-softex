@@ -3,12 +3,12 @@ vendas = [100, 50, 15, 20, 30, 500, 150]
 print(vendas)
 
 # # soma elemnetos da lista
-totalVendas = sum(vendas)
-print(totalVendas)
+total_vendas = sum(vendas)
+print(total_vendas)
 
 # # tamanho da lista
-quantidadeVendas = len(vendas)
-print(quantidadeVendas)
+quantidade_vendas = len(vendas)
+print(quantidade_vendas)
 
 # # maximo e minimo
 print(max(vendas))
@@ -18,45 +18,45 @@ print(min(vendas))
 print(vendas[-1])
 
 # verificar um elemneto da lista
-listaProdutos = ["iphone", "airpod", "macbook", "ipad" , "apple watch"]
+lista_produtos = ["iphone", "airpod", "macbook", "ipad", "apple watch"]
 
 # adicionar item da lista
-listaProdutos.append("zulu")
+lista_produtos.append("zulu")
 
-produtoProcurado = input("Pesquise o nome do Produto: ")
-print(produtoProcurado in listaProdutos)
+produto_procurado = input("Pesquise o nome do Produto: ")
+print(produto_procurado in lista_produtos)
 
 
-temEmEstoque = produtoProcurado in listaProdutos
-if temEmEstoque == True:
+tem_em_estoque = produto_procurado in lista_produtos
+if tem_em_estoque == True:
     print("Temos esse Produto")
 else:
     print("Não Temos esse produto")
 
 
 # # remover item da lista
-listaProdutos.remove("apple watch")
-listaProdutos.pop(0)
+lista_produtos.remove("apple watch")
+lista_produtos.pop(0)
 
 
 # # editar um item na lista
-precoProduto = [1000, 500, 2500, 1500]
-precoProduto[0] = precoProduto[0] * 1.5
-print(precoProduto)
+preco_produto = [1000, 500, 2500, 1500]
+preco_produto[0] = preco_produto[0] * 1.5
+print(preco_produto)
 
 # #contar quantas vezes um item aparece na lista
-listaProdutos = ["iphone", "airpod", "airpod", "iphone", "ipad", "ipad", "ipad"]
-print(listaProdutos.count("ipad"))
+lista_produtos = ["iphone", "airpod", "airpod", "iphone", "ipad", "ipad", "ipad"]
+print(lista_produtos.count("ipad"))
 
 # ordenar uma lista
-listaProdutos.sort()  # ordem alfabética
-print(listaProdutos)
+lista_produtos.sort()  # ordem alfabética
+print(lista_produtos)
 
-listaProdutos.reverse()  # ordem reversa
-print(listaProdutos)
+lista_produtos.reverse()  # ordem reversa
+print(lista_produtos)
 
-precoProduto.sort()
-print(precoProduto)
+preco_produto.sort()
+print(preco_produto)
 
-precoProduto.reverse()
-print(precoProduto)
+preco_produto.reverse()
+print(preco_produto)
