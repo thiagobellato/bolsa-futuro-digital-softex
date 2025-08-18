@@ -23,6 +23,7 @@ print(email_cliente.find("@"))  # -1 quando não encontrado
 print(len(email_cliente))
 print(len(nome_cliente))
 
+
 # pegar um caracter
 print((email_cliente[0]))
 print((nome_cliente[0]))

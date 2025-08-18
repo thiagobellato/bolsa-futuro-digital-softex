@@ -1,7 +1,6 @@
 nome_cliente = "João"
 email_cliente = "joao@Gmail.cOm"
 
-
 novo_nome = nome_cliente.replace("João", "João da Silva")
 print(novo_nome)
 

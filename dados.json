@@ -1,0 +1,26 @@
+{
+  "usuarios": [
+    {
+      "nome": "Thiago",
+      "nascimento": "14/07/1995"
+    },
+    {
+      "nome": "Nina",
+      "nascimento": "23/12/2009"
+    }
+  ],
+  "produtos": [
+    {
+      "nome": "poco x3 pro",
+      "preco": 1500.0
+    },
+    {
+      "nome": "moto g20",
+      "preco": 2000.0
+    },
+    {
+      "nome": "iphone",
+      "preco": 8000.0
+    }
+  ]
+}

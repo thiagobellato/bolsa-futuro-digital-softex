@@ -26,7 +26,6 @@ lista_produtos.append("zulu")
 produto_procurado = input("Pesquise o nome do Produto: ")
 print(produto_procurado in lista_produtos)
 
-
 tem_em_estoque = produto_procurado in lista_produtos
 if tem_em_estoque == True:
     print("Temos esse Produto")
