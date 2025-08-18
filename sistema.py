@@ -20,16 +20,22 @@ while True:
     opcao = input("Opção: ").strip()
 
     if opcao == "1":  # LOGIN
-        nome_cliente = input("Digite seu nome: ").capitalize()
+        cpf_cliente = int(input(f"Digite o seu CPF: "))
 
         # Verifica se o usuário está cadastrado
         encontrado = False
         for usuario in usuarios:
-            if usuario["nome"] == nome_cliente:
+            if usuario["cpf"] == cpf_cliente:
                 encontrado = True
+                nome_cliente = usuario["nome"]
                 nascimento = datetime.strptime(usuario["nascimento"], "%d/%m/%Y")
                 hoje = datetime.today()
-                idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
+                idade = (
+                    hoje.year
+                    - nascimento.year
+                    - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
+                )
+
                 break
 
         if encontrado:
@@ -44,6 +50,7 @@ while True:
     elif opcao == "2":  # CADASTRO
         nome_cliente = input("Digite seu nome: ").capitalize()
         nascimento_str = input("Digite sua data de nascimento (DD/MM/AAAA): ").strip()
+        cpf_cliente = int(input(f"Digite o seu CPF (00000000000)"))
         try:
             nascimento = datetime.strptime(nascimento_str, "%d/%m/%Y")
         except ValueError:
@@ -51,18 +58,26 @@ while True:
             continue
 
         # Adiciona usuário à lista (permitindo qualquer idade)
-        usuarios.append({"nome": nome_cliente, "nascimento": nascimento_str})
+        usuarios.append(
+            {"nome": nome_cliente, "nascimento": nascimento_str, "cpf": cpf_cliente}
+        )
 
         # Salva no JSON
         with open("dados.json", "w", encoding="utf-8") as f:
-            json.dump({"usuarios": usuarios, "produtos": produtos}, f, ensure_ascii=False, indent=2)
+            json.dump(
+                {"usuarios": usuarios, "produtos": produtos},
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
 
-        print(f"Usuário {nome_cliente} cadastrado com sucesso! Faça login para continuar.")
+        print(
+            f"Usuário {nome_cliente} cadastrado com sucesso! Faça login para continuar."
+        )
 
     else:
         print("Opção inválida! Digite 1 ou 2.")
 
-# ---------- LOOP DO MENU DE PRODUTOS ----------
 while True:
     print("\nBem-vindo(a) ao sistema de cadastro de produtos!")
     print("Digite uma das opções abaixo:")
@@ -89,7 +104,12 @@ while True:
 
         # salvar produtos no JSON
         with open("dados.json", "w", encoding="utf-8") as f:
-            json.dump({"usuarios": usuarios, "produtos": produtos}, f, ensure_ascii=False, indent=2)
+            json.dump(
+                {"usuarios": usuarios, "produtos": produtos},
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
 
         print(f"Produto {nome_produto} cadastrado com sucesso!")
 
@@ -99,7 +119,7 @@ while True:
         else:
             print("\nLista de Produtos")
             for p in produtos:
-                print("-", p["nome"].capitalize(), "R$", p["preco"])
+                print("-", p["nome"].lower(), "R$", p["preco"])
 
     elif opcao == 3:
         nome_produto = input("Digite o nome do produto a ser excluído: ").lower()
@@ -109,7 +129,12 @@ while True:
 
         # salvar produtos no JSON
         with open("dados.json", "w", encoding="utf-8") as f:
-            json.dump({"usuarios": usuarios, "produtos": produtos}, f, ensure_ascii=False, indent=2)
+            json.dump(
+                {"usuarios": usuarios, "produtos": produtos},
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
 
         if tamanho_depois < tamanho_antes:
             print(f"Produto {nome_produto} excluído com sucesso!")

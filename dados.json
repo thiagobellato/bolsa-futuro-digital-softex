@@ -2,11 +2,23 @@
   "usuarios": [
     {
       "nome": "Thiago",
-      "nascimento": "14/07/1995"
+      "nascimento": "14/07/1995",
+      "cpf": "16069268709"
     },
     {
-      "nome": "Nina",
-      "nascimento": "23/12/2009"
+      "nome": "Admin",
+      "nascimento": "01/01/2000",
+      "cpf": 99999999999
+    },
+    {
+      "nome": "Julio",
+      "nascimento": "01/01/2000",
+      "cpf": 55555555555
+    },
+    {
+      "nome": "João",
+      "nascimento": "15/01/1999",
+      "cpf": 11111111111
     }
   ],
   "produtos": [
@@ -19,8 +31,8 @@
       "preco": 2000.0
     },
     {
-      "nome": "iphone",
-      "preco": 8000.0
+      "nome": "moto g50",
+      "preco": 3500.0
     }
   ]
 }
