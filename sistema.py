@@ -20,12 +20,17 @@ while True:
     opcao = input("Opção: ").strip()
 
     if opcao == "1":  # LOGIN
-        cpf_cliente = int(input(f"Digite o seu CPF: "))
+        try:
+            cpf_cliente = int(input(f"Digite o seu CPF: "))
+        except ValueError:
+            print("CPF inválido! Digite apenas números.")
+            continue
 
         # Verifica se o usuário está cadastrado
         encontrado = False
         for usuario in usuarios:
-            if usuario["cpf"] == cpf_cliente:
+            # Converte o CPF do JSON de volta para int para a comparação
+            if int(usuario["cpf"]) == cpf_cliente:
                 encontrado = True
                 nome_cliente = usuario["nome"]
                 nascimento = datetime.strptime(usuario["nascimento"], "%d/%m/%Y")
@@ -35,7 +40,6 @@ while True:
                     - nascimento.year
                     - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
                 )
-
                 break
 
         if encontrado:
@@ -45,21 +49,22 @@ while True:
             else:
                 print(f"Acesso negado! {nome_cliente} é menor de idade ({idade} anos).")
         else:
-            print(f"Usuário {nome_cliente} não encontrado. Cadastre-se primeiro.")
+            print(f"Usuário não encontrado. Cadastre-se primeiro.")
 
     elif opcao == "2":  # CADASTRO
         nome_cliente = input("Digite seu nome: ").capitalize()
         nascimento_str = input("Digite sua data de nascimento (DD/MM/AAAA): ").strip()
-        cpf_cliente = int(input(f"Digite o seu CPF (00000000000)"))
         try:
+            cpf_cliente = int(input(f"Digite o seu CPF (apenas números): "))
             nascimento = datetime.strptime(nascimento_str, "%d/%m/%Y")
         except ValueError:
-            print("Formato de data inválido! Use DD/MM/AAAA.")
+            print("Entrada inválida! Verifique o formato da data ou do CPF.")
             continue
 
-        # Adiciona usuário à lista (permitindo qualquer idade)
+        # Adiciona usuário à lista
+        # Converte o CPF de int para string antes de salvar
         usuarios.append(
-            {"nome": nome_cliente, "nascimento": nascimento_str, "cpf": cpf_cliente}
+            {"nome": nome_cliente, "nascimento": nascimento_str, "cpf": str(cpf_cliente)}
         )
 
         # Salva no JSON
@@ -78,6 +83,7 @@ while True:
     else:
         print("Opção inválida! Digite 1 ou 2.")
 
+# --- SEÇÃO DO CÓDIGO QUE JÁ ESTAVA FUNCIONANDO ---
 while True:
     print("\nBem-vindo(a) ao sistema de cadastro de produtos!")
     print("Digite uma das opções abaixo:")

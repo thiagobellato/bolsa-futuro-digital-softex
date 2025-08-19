@@ -6,33 +6,24 @@
       "cpf": "16069268709"
     },
     {
-      "nome": "Admin",
-      "nascimento": "01/01/2000",
-      "cpf": 99999999999
+      "nome": "Julia",
+      "nascimento": "08/09/2009",
+      "cpf": "22222222222"
     },
     {
-      "nome": "Julio",
-      "nascimento": "01/01/2000",
-      "cpf": 55555555555
-    },
-    {
-      "nome": "João",
-      "nascimento": "15/01/1999",
-      "cpf": 11111111111
+      "nome": "Lara",
+      "nascimento": "05/12/2010",
+      "cpf": "33333333333"
     }
   ],
   "produtos": [
     {
-      "nome": "poco x3 pro",
-      "preco": 1500.0
-    },
-    {
-      "nome": "moto g20",
+      "nome": "ipad",
       "preco": 2000.0
     },
     {
-      "nome": "moto g50",
-      "preco": 3500.0
+      "nome": "iphone15",
+      "preco": 5000.0
     }
   ]
 }
