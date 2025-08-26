@@ -7,9 +7,10 @@
 
 def calcular_imposto(preco):
 
-    imposto = 0.50
+    imposto = 0.15
     valor_total_venda = preco * imposto
     print(f"O Valor a ser pago de impostos é: {valor_total_venda}")
+    return valor_total_venda
 
 
 estoque_loja = {
@@ -40,9 +41,13 @@ elif estoque_loja[nome_produto]["quantidade"] >= quantidade_digitada:
 else:
     print("Não temos a quantidade desejada em estoque.")
 
-calcular_imposto(valor_total_venda)
-print("\n --- ESTOQUE FINAL ---")
+imposto_total = calcular_imposto(valor_total_venda)
+print("\n       --- ESTOQUE FINAL ---")
 for nome_produto, detalhes_produto in estoque_loja.items():
     print(
-        f"- Produto:{nome_produto.capitalize()}: Quantidade Disponível:{detalhes_produto['quantidade']}"
+        f"- Produto: {nome_produto.capitalize()}: Quantidade Disponível: {detalhes_produto['quantidade']}"
     )
+
+if 'valor_total_venda' in locals():
+    lucro_total = valor_total_venda - imposto_total
+    print(lucro_total)
