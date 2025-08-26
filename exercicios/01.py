@@ -1,10 +1,3 @@
-# 4. Crie uma função para calcular impostos:
-# o Use o conceito de def para criar uma função chamada
-# calcular_imposto(preco).
-# o Esta função deve receber o preco de um produto como parâmetro.
-# o A função deve retornar o valor do imposto, que é de 15% sobre o preco.
-# o No final da sua lógica de venda, adicione uma linha para calcular e exibir
-# o valor do imposto sobre a venda total.
 # 5. Exiba o estoque final e o lucro total:
 # o Após a execução da lógica de venda, use um for loop para percorrer o
 # dicionário estoque_loja e imprimir o estoque atual de cada produto.
@@ -14,9 +7,9 @@
 
 def calcular_imposto(preco):
 
-    imposto = 0.15
+    imposto = 0.50
     valor_total_venda = preco * imposto
-    print(valor_total_venda)
+    print(f"O Valor a ser pago de impostos é: {valor_total_venda}")
 
 
 estoque_loja = {
@@ -27,7 +20,7 @@ estoque_loja = {
 
 for nome_produto, detalhes_produto in estoque_loja.items():
     print(
-        f"- {nome_produto.capitalize()}: {detalhes_produto['quantidade']} - {detalhes_produto['preco']}"
+        f"- Produto:{nome_produto.capitalize()}: Quantidade Disponível:{detalhes_produto['quantidade']} - Preço(R$):{detalhes_produto['preco']:.2f}"
     )
 
 nome_produto = input("Qual produto deseja comprar:").lower()
@@ -47,6 +40,9 @@ elif estoque_loja[nome_produto]["quantidade"] >= quantidade_digitada:
 else:
     print("Não temos a quantidade desejada em estoque.")
 
-for preco in estoque_loja:
-    imposto = calcular_imposto(preco)
-    print(calcular_imposto)
+calcular_imposto(valor_total_venda)
+print("\n --- ESTOQUE FINAL ---")
+for nome_produto, detalhes_produto in estoque_loja.items():
+    print(
+        f"- Produto:{nome_produto.capitalize()}: Quantidade Disponível:{detalhes_produto['quantidade']}"
+    )
