@@ -6,24 +6,23 @@
       "cpf": "16069268709"
     },
     {
-      "nome": "Julia",
-      "nascimento": "08/09/2009",
-      "cpf": "22222222222"
-    },
-    {
-      "nome": "Lara",
-      "nascimento": "05/12/2010",
-      "cpf": "33333333333"
+      "nome": "João",
+      "nascimento": "10/08/2008",
+      "cpf": "11111111111"
     }
   ],
   "produtos": [
     {
-      "nome": "ipad",
-      "preco": 2000.0
+      "nome": "bala",
+      "preco": 0.2
     },
     {
-      "nome": "iphone15",
-      "preco": 5000.0
+      "nome": "pirulito",
+      "preco": 0.5
+    },
+    {
+      "nome": "paçoca",
+      "preco": 1.5
     }
   ]
 }
