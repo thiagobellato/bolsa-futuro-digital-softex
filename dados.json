@@ -23,6 +23,10 @@
     {
       "nome": "paçoca",
       "preco": 1.5
+    },
+    {
+      "nome": "biscoito",
+      "preco": 2.0
     }
   ]
 }
