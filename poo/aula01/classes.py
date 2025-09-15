@@ -1,8 +1,11 @@
-vendedor = "João"
-vendas = 1000
-meta = 500
+from vendedor import Vendedor
 
-if vendas >= meta:
-    print("Bateu a Meta")
-else:
-    print("Não Bateu a Meta")
+vendedor1 = Vendedor("João")
+vendedor1.vendeu(1000)
+vendedor1.bateu_meta(600)
+vendedor1 = Vendedor("Thiago")
+vendedor1.vendeu(600)
+vendedor1.bateu_meta(600)
+vendedor1 = Vendedor("Lucas")
+vendedor1.vendeu(300)
+vendedor1.bateu_meta(600)
