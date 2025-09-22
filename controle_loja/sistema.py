@@ -4,7 +4,7 @@ from datetime import datetime
 
 # ---------- CARREGAR DADOS ----------
 try:
-    with open("dados.json", "r", encoding="utf-8") as f:
+    with open("controle_loja/dados.json", "r", encoding="utf-8") as f:
         dados = json.load(f)
         usuarios = dados.get("usuarios", [])
         produtos = dados.get("produtos", [])
@@ -83,7 +83,7 @@ class Crud:
         try:
             preco_produto = float(input("Digite o preço do produto: "))
             produtos.append({"nome": nome_produto, "preco": preco_produto})
-            with open("dados.json", "w", encoding="utf-8") as f:
+            with open("controle_loja/dados.json", "w", encoding="utf-8") as f:
                 json.dump(
                     {"usuarios": usuarios, "produtos": produtos},
                     f,
@@ -115,7 +115,7 @@ class Crud:
 
         tamanho_depois = len(produtos)
 
-        with open("dados.json", "w", encoding="utf-8") as f:
+        with open("controle_loja/dados.json", "w", encoding="utf-8") as f:
             json.dump(
                 {"usuarios": usuarios, "produtos": produtos},
                 f,

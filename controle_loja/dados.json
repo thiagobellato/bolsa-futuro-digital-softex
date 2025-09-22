@@ -27,6 +27,10 @@
     {
       "nome": "biscoito",
       "preco": 2.0
+    },
+    {
+      "nome": "bala de coco",
+      "preco": 3.0
     }
   ]
 }
