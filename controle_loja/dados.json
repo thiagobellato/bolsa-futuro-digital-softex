@@ -31,6 +31,14 @@
     {
       "nome": "bala de coco",
       "preco": 3.0
+    },
+    {
+      "nome": "salgadinho",
+      "preco": 2.5
+    },
+    {
+      "nome": "suco",
+      "preco": 1.0
     }
   ]
 }
