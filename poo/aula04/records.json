@@ -18,23 +18,27 @@
         },
         {
             "nome": "PLAYER",
+            "pontos": 7
+        },
+        {
+            "nome": "FSDFSD",
+            "pontos": 3
+        },
+        {
+            "nome": "R",
+            "pontos": 3
+        },
+        {
+            "nome": "M",
+            "pontos": 3
+        },
+        {
+            "nome": "PLAYER",
             "pontos": 2
         },
         {
-            "nome": "AUGUSTO",
-            "pontos": 1
-        },
-        {
-            "nome": "THIAGO",
-            "pontos": 0
-        },
-        {
             "nome": "PLAYER",
-            "pontos": 0
-        },
-        {
-            "nome": "PLAYER",
-            "pontos": 0
+            "pontos": 2
         }
     ]
 }

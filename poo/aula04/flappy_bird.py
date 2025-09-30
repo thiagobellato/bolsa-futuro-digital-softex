@@ -18,8 +18,9 @@ TELA_ALTURA = 800
 
 # Parâmetros de Dificuldade
 VELOCIDADE_CANO = 5 
+POSICAO_PASSARO_ESPECIAL = 180 
 
-# Carregamento de Imagens (Mantido o mesmo)
+# Carregamento de Imagens
 try:
     IMAGEM_CANO = pygame.transform.scale2x(
         pygame.image.load(os.path.join(IMGS_DIR, "pipe.png"))
@@ -41,15 +42,22 @@ except pygame.error as e:
     sys.exit()
 
 pygame.font.init()
+
+# --- FONTES ATUALIZADAS ---
+try:
+    FONTE_MENU_ESTILO = pygame.font.SysFont("comicsansms", 40, bold=True)
+    FONTE_MENU_TITULO = pygame.font.SysFont("comicsansms", 70, bold=True)
+except:
+    FONTE_MENU_ESTILO = pygame.font.SysFont("arial", 40)
+    FONTE_MENU_TITULO = pygame.font.SysFont("arial", 70, bold=True)
+
 FONTE_PONTOS = pygame.font.SysFont("arial", 50)
 FONTE_INPUT = pygame.font.SysFont("arial", 30)
-FONTE_MENU = pygame.font.SysFont("arial", 40)
 
 
 # --- FUNÇÕES DE RECORDS (LEADERBOARD) ---
-
+# (Mantidas as mesmas)
 def carregar_records():
-    """Carrega a lista de records do arquivo JSON."""
     if not os.path.exists(ARQUIVO_RECORDS):
         return []
 
@@ -64,20 +72,17 @@ def carregar_records():
             return []
 
 def salvar_records(records):
-    """Salva a lista completa de records no arquivo JSON."""
     records.sort(key=lambda x: x['pontos'], reverse=True)
     with open(ARQUIVO_RECORDS, 'w') as file:
         json.dump({"leaderboard": records[:10]}, file, indent=4)
 
 def checar_novo_recorde(pontos):
-    """Verifica se a pontuação merece entrar no Top 10."""
     records = carregar_records()
     if len(records) < 10 or pontos > records[-1]['pontos']:
         return True
     return False
 
 def adicionar_recorde(nome, pontos):
-    """Adiciona um novo recorde à lista e a salva, mantendo a classificação."""
     records = carregar_records()
     nome_limpo = nome.strip().upper()[:8]
     records.append({"nome": nome_limpo if nome_limpo else "NOME", "pontos": pontos})
@@ -101,15 +106,16 @@ class Passaro:
         self.tempo = 0
         self.contagem_imagem = 0
         self.imagem = self.IMGS[1]
-
+        
     def pular(self):
-        self.velocidade = -10.5 
+        self.velocidade = -12.0  
         self.tempo = 0
         self.altura = self.y
 
     def mover(self):
         self.tempo += 1
-        deslocamento = self.velocidade * self.tempo + 1.6 * (self.tempo**2) 
+        GRAVIDADE_PLANO = 0.9 
+        deslocamento = self.velocidade * self.tempo + GRAVIDADE_PLANO * (self.tempo**2) 
 
         if deslocamento > 16:
             deslocamento = 16
@@ -117,7 +123,7 @@ class Passaro:
             deslocamento = -10
         
         self.y += deslocamento
-
+        # Lógica de rotação
         if deslocamento < 0 or self.y < (self.altura - 50):
             if self.angulo < self.ROTACAO_MAXIMA:
                 self.angulo = self.ROTACAO_MAXIMA
@@ -126,11 +132,10 @@ class Passaro:
                 self.angulo -= self.VELOCIDADE_ROTACAO
 
     def desenhar(self, tela):
+        # Lógica de animação
         self.contagem_imagem += 1
-        
         if self.contagem_imagem < self.TEMPO_ANIMACAO:
             self.imagem = self.IMGS[0]
-        # ... (Animação do pássaro, mantida a mesma)
         elif self.contagem_imagem < self.TEMPO_ANIMACAO * 2:
             self.imagem = self.IMGS[1]
         elif self.contagem_imagem < self.TEMPO_ANIMACAO * 3:
@@ -141,10 +146,6 @@ class Passaro:
             self.imagem = self.IMGS[0]
             self.contagem_imagem = 0
             
-        if self.angulo <= -80:
-            self.imagem = self.IMGS[1]
-            self.contagem_imagem = self.TEMPO_ANIMACAO * 2
-
         imagem_rotacionada = pygame.transform.rotate(self.imagem, self.angulo)
         pos_centro_imagem = self.imagem.get_rect(topleft=(self.x, self.y)).center
         retangulo = imagem_rotacionada.get_rect(center=pos_centro_imagem)
@@ -154,12 +155,12 @@ class Passaro:
         return pygame.mask.from_surface(self.imagem)
 
 
-# --- CLASSE CANO (Mantida a mesma) ---
+# --- CLASSE CANO (Lógica de Modo Corrigida) ---
 
 class Cano:
     DISTANCIA = 200
     
-    def __init__(self, x, dificuldade):
+    def __init__(self, x, cano_dificuldade):
         self.x = x
         self.altura = 0
         self.pos_topo = 0
@@ -168,32 +169,31 @@ class Cano:
         self.CANO_BASE = IMAGEM_CANO
         self.passou = False
         
-        # Atributos de Dificuldade
-        self.movimento_vertical = (dificuldade == 'HARD')
-        self.intermitente = (dificuldade == 'VERY HARD')
+        # --- ATRIBUTOS DE MODO CORRIGIDOS ---
+        self.movimento_vertical = (cano_dificuldade == 'MEDIUM')
+        self.intermitente = (cano_dificuldade == 'HARD')
+        self.pode_ser_controlado = (cano_dificuldade == 'ESPECIAL_CONTROLE')
         
-        if dificuldade == 'EASY':
+        self.y_ajuste = 0 # O deslocamento vertical aplicado pelo jogador (só se for controlável)
+        
+        if cano_dificuldade == 'EASY':
             self.VELOCIDADE_H = VELOCIDADE_CANO
-        elif dificuldade == 'HARD':
+        elif cano_dificuldade == 'MEDIUM':
             self.VELOCIDADE_H = VELOCIDADE_CANO + 2
-        else: # VERY HARD
+        else: # HARD e ESPECIAL_CONTROLE
             self.VELOCIDADE_H = VELOCIDADE_CANO + 3
         
-        # Movimento Vertical
-        self.vel_y = 0
-        self.limite_superior = 0
-        self.limite_inferior = 0
-        
-        # Visibilidade (VERY HARD)
+        # Visibilidade (apenas no modo HARD)
         self.visivel = True
         self.contador_visibilidade = 0
         
         if self.intermitente:
-            self.tempo_visivel = 30 * 0.8 # 0.8 segundos visível
-            self.tempo_invisivel = 30 * 0.8 # 0.8 segundos invisível
+            self.tempo_visivel = 30 * 1.0 
+            self.tempo_invisivel = 30 * 0.5 
         
         self.definir_altura()
         
+        # Movimento Vertical (apenas no modo MEDIUM)
         if self.movimento_vertical:
             self.vel_y = random.choice([-2, 2])
             self.limite_superior = self.altura - 150
@@ -208,10 +208,10 @@ class Cano:
         self.pos_base = self.altura + self.DISTANCIA
 
     def mover(self):
-        # Movimento Horizontal
+        # Movimento Horizontal (sempre acontece)
         self.x -= self.VELOCIDADE_H
         
-        # Movimento Vertical (HARD)
+        # Movimento Vertical (Modo MEDIUM)
         if self.movimento_vertical:
             self.altura += self.vel_y
             self.pos_topo += self.vel_y
@@ -220,7 +220,7 @@ class Cano:
             if self.altura < self.limite_superior or self.altura > self.limite_inferior:
                 self.vel_y *= -1
                 
-        # Lógica de Visibilidade (VERY HARD)
+        # Lógica de Visibilidade (Modo HARD)
         if self.intermitente:
             self.contador_visibilidade += 1
             
@@ -233,13 +233,12 @@ class Cano:
 
 
     def desenhar(self, tela):
-        # SÓ DESENHA SE ESTIVER VISÍVEL
         if self.visivel:
-            tela.blit(self.CANO_TOPO, (self.x, self.pos_topo))
-            tela.blit(self.CANO_BASE, (self.x, self.pos_base))
+            # Desenha com o ajuste vertical (0 se não for especial)
+            tela.blit(self.CANO_TOPO, (self.x, self.pos_topo + self.y_ajuste))
+            tela.blit(self.CANO_BASE, (self.x, self.pos_base + self.y_ajuste))
 
     def colidir(self, passaro):
-        # A colisão só é checada se o cano estiver visível.
         if not self.visivel:
             return False
             
@@ -247,8 +246,9 @@ class Cano:
         topo_mask = pygame.mask.from_surface(self.CANO_TOPO)
         base_mask = pygame.mask.from_surface(self.CANO_BASE)
 
-        distancia_topo = (self.x - passaro.x, self.pos_topo - round(passaro.y))
-        distancia_base = (self.x - passaro.x, self.pos_base - round(passaro.y))
+        # Colisão deve considerar o ajuste vertical!
+        distancia_topo = (self.x - passaro.x, (self.pos_topo + self.y_ajuste) - round(passaro.y))
+        distancia_base = (self.x - passaro.x, (self.pos_base + self.y_ajuste) - round(passaro.y))
 
         topo_ponto = passaro_mask.overlap(topo_mask, distancia_topo)
         base_ponto = passaro_mask.overlap(base_mask, distancia_base)
@@ -259,7 +259,6 @@ class Cano:
 
 
 class Chao:
-    # ... (Classe Chao mantida a mesma)
     IMAGEM = IMAGEM_CHAO
     LARGURA = IMAGEM.get_width()
 
@@ -283,22 +282,29 @@ class Chao:
         tela.blit(self.IMAGEM, (self.x2, self.y))
 
 
-# --- FUNÇÕES DE INTERFACE (Mantidas as mesmas) ---
+# --- FUNÇÕES DE INTERFACE (Mantidas) ---
 
-def desenhar_tela(tela, passaros, canos, chao, pontos):
+def desenhar_tela(tela, passaros, canos, chao, pontos, modo):
     tela.blit(IMAGEM_BACKGROUND, (0, 0))
+    
     for passaro in passaros:
         passaro.desenhar(tela)
     for cano in canos:
         cano.desenhar(tela)
 
+    texto_modo = FONTE_INPUT.render(f"MODO: {modo}", 1, (200, 200, 200))
+    tela.blit(texto_modo, (10, 10))
+
+    if modo.startswith('ESPECIAL'):
+        texto_instrucao = FONTE_INPUT.render("Controle: Setas Cima/Baixo ou W/S (Mover Cano)", 1, (255, 255, 0))
+        tela.blit(texto_instrucao, (TELA_LARGURA // 2 - texto_instrucao.get_width() // 2, 70))
+
+
     texto = FONTE_PONTOS.render(f"Pontuação: {pontos}", 1, (255, 255, 255))
     tela.blit(texto, (TELA_LARGURA - 10 - texto.get_width(), 10))
     chao.desenhar(tela)
 
-
 def exibir_game_over(tela, pontos, nome_jogador, novo_recorde, recorde_salvo):
-    
     s = pygame.Surface((TELA_LARGURA, TELA_ALTURA), pygame.SRCALPHA)
     s.fill((0, 0, 0, 180)) 
     tela.blit(s, (0, 0))
@@ -330,22 +336,20 @@ def exibir_game_over(tela, pontos, nome_jogador, novo_recorde, recorde_salvo):
         texto_nao_recorde = FONTE_INPUT.render("Sua pontuação não entrou no Top 10.", 1, (200, 200, 200))
         tela.blit(texto_nao_recorde, (TELA_LARGURA // 2 - texto_nao_recorde.get_width() // 2, 370))
 
+
     fonte_instrucao_reset = pygame.font.SysFont("arial", 25)
-    texto_reset = fonte_instrucao_reset.render("Pressione 'R' para Recomeçar / ENTER para Menu", 1, (200, 200, 200))
+    texto_reset = fonte_instrucao_reset.render("Pressione **R** (Recordes) | **M** (Menu) | Qualquer Outra (Recomeçar)", 1, (200, 200, 200))
     tela.blit(texto_reset, (TELA_LARGURA // 2 - texto_reset.get_width() // 2, TELA_ALTURA - 50))
 
     pygame.display.update()
 
-
 def desenhar_leaderboard(tela, records):
-    """Desenha a tela do Leaderboard."""
     tela.blit(IMAGEM_BACKGROUND, (0, 0))
 
-    fonte_titulo = pygame.font.SysFont("arial", 70, bold=True)
-    texto_titulo = fonte_titulo.render("RECORDES", 1, (255, 255, 0))
+    texto_titulo = FONTE_MENU_TITULO.render("RECORDES", 1, (255, 255, 0))
     tela.blit(texto_titulo, (TELA_LARGURA // 2 - texto_titulo.get_width() // 2, 50))
     
-    fonte_item = pygame.font.SysFont("arial", 40)
+    fonte_item = FONTE_MENU_ESTILO
     y_pos = 150
     
     for i, record in enumerate(records):
@@ -358,30 +362,28 @@ def desenhar_leaderboard(tela, records):
         tela.blit(texto_linha, (TELA_LARGURA // 2 - texto_linha.get_width() // 2, y_pos))
         y_pos += 50
     
-    fonte_instrucao = pygame.font.SysFont("arial", 25)
-    texto_instrucao = fonte_instrucao.render("Pressione ENTER para Voltar", 1, (150, 150, 150))
+    texto_instrucao = FONTE_INPUT.render("Pressione ENTER para Voltar", 1, (150, 150, 150))
     tela.blit(texto_instrucao, (TELA_LARGURA // 2 - texto_instrucao.get_width() // 2, TELA_ALTURA - 50))
     
     pygame.display.update()
 
 
-# --- FUNÇÃO DE SELEÇÃO DE MENU (Mantida a mesma) ---
+# --- FUNÇÃO DE SELEÇÃO DE MENU (ESTILO) ---
 
 def desenhar_menu_selecao(tela, selecao):
-    """Desenha o menu de seleção de dificuldade com o novo nível 3."""
     tela.blit(IMAGEM_BACKGROUND, (0, 0))
     
-    fonte_titulo = pygame.font.SysFont("arial", 70, bold=True)
-    texto_titulo = fonte_titulo.render("FLAPPY BIRD", 1, (255, 255, 255))
+    texto_titulo = FONTE_MENU_TITULO.render("FLAPPY BIRD", 1, (255, 255, 255))
     tela.blit(texto_titulo, (TELA_LARGURA // 2 - texto_titulo.get_width() // 2, 100))
 
-    texto_instrucao = FONTE_MENU.render("Selecione a Dificuldade:", 1, (200, 200, 200))
+    texto_instrucao = FONTE_INPUT.render("Selecione o Modo:", 1, (200, 200, 200))
     tela.blit(texto_instrucao, (TELA_LARGURA // 2 - texto_instrucao.get_width() // 2, 250))
     
     opcoes = [
-        'EASY (Canos Fixos, Vel. Normal)', 
-        'HARD (Canos Móveis, Vel. Rápida)',
-        'VERY HARD (Canos Intermitentes!)'
+        '[1] EASY (Normal Player)', 
+        '[2] MEDIUM (Canos Móveis)',
+        '[3] HARD (Cano Intermitente)',
+        '[4] MODO ESPECIAL (Controle de Cano)' 
     ]
     
     y_pos = 350
@@ -390,12 +392,11 @@ def desenhar_menu_selecao(tela, selecao):
         if i + 1 == selecao:
             cor = (255, 255, 0) 
         
-        tecla = str(i + 1)
-        texto_opcao = FONTE_MENU.render(f"[{tecla}] {opcao}", 1, cor)
+        texto_opcao = FONTE_MENU_ESTILO.render(f"{opcao}", 1, cor)
         tela.blit(texto_opcao, (TELA_LARGURA // 2 - texto_opcao.get_width() // 2, y_pos))
         y_pos += 50
     
-    texto_leader = FONTE_MENU.render("Pressione 'L' para Recordes", 1, (150, 150, 150))
+    texto_leader = FONTE_INPUT.render("Pressione **R** para Recordes", 1, (150, 150, 150))
     tela.blit(texto_leader, (TELA_LARGURA // 2 - texto_leader.get_width() // 2, TELA_ALTURA - 100))
 
     pygame.display.update()
@@ -404,11 +405,11 @@ def main_menu():
     
     pygame.init()
     tela = pygame.display.set_mode((TELA_LARGURA, TELA_ALTURA))
-    pygame.display.set_caption("Flappy Bird com Leaderboard")
+    pygame.display.set_caption("Flappy Bird com Novo Modo")
     
     menu_aberto = True
     leaderboard_aberto = False
-    selecao = 1 # 1: EASY, 2: HARD, 3: VERY HARD
+    selecao = 4 # Começa na seleção do novo modo
     
     while menu_aberto:
         for evento in pygame.event.get():
@@ -424,18 +425,20 @@ def main_menu():
                         selecao = 2
                     elif evento.key == pygame.K_3: 
                         selecao = 3
+                    elif evento.key == pygame.K_4: 
+                        selecao = 4
                     
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_RETURN:
                         if selecao == 1:
-                            dificuldade = 'EASY'
+                            game_loop(tela, modo='DIFICULDADE', dificuldade='EASY')
                         elif selecao == 2:
-                            dificuldade = 'HARD'
-                        else:
-                            dificuldade = 'VERY HARD'
-                        
-                        game_loop(tela, dificuldade)
+                            game_loop(tela, modo='DIFICULDADE', dificuldade='MEDIUM')
+                        elif selecao == 3:
+                            game_loop(tela, modo='DIFICULDADE', dificuldade='HARD')
+                        else: # Modo Especial
+                            game_loop(tela, modo='ESPECIAL')
                     
-                    if evento.key == pygame.K_l:
+                    if evento.key == pygame.K_r: # 'R' para Recordes
                         leaderboard_aberto = True
                 else:
                     if evento.key == pygame.K_RETURN:
@@ -448,30 +451,38 @@ def main_menu():
             desenhar_menu_selecao(tela, selecao)
 
 
-# --- LOOP DO JOGO (MODIFICADO AQUI) ---
-def game_loop(tela, dificuldade):
+# --- LOOP DO JOGO (COM MODO ESPECIAL DE CONTROLE CORRIGIDO) ---
+def game_loop(tela, modo, dificuldade=None):
     
-    # Define a posição inicial do pássaro
+    # 1. Configuração do Pássaro e Dificuldade
     posicao_x_passaro = 230
+    cano_dificuldade = 'HARD' 
     
-    # **********************************************
-    # NOVO AJUSTE: Move o pássaro para trás no VERY HARD
-    if dificuldade == 'VERY HARD':
-        # Move o pássaro 50 pixels para a esquerda
-        posicao_x_passaro = 180 
-    # **********************************************
-    
-    # Ajusta a velocidade do chão conforme a dificuldade
-    if dificuldade == 'EASY':
-        velocidade_chao = VELOCIDADE_CANO
-    elif dificuldade == 'HARD':
-        velocidade_chao = VELOCIDADE_CANO + 2
-    else: # VERY HARD
-        velocidade_chao = VELOCIDADE_CANO + 3
+    if modo == 'DIFICULDADE':
+        
+        if dificuldade == 'EASY':
+            velocidade_chao = VELOCIDADE_CANO
+            cano_dificuldade = 'EASY'
+            modo_titulo = 'EASY (Normal Player)'
+        elif dificuldade == 'MEDIUM':
+            velocidade_chao = VELOCIDADE_CANO + 2
+            cano_dificuldade = 'MEDIUM' # Canos se movem verticalmente
+            modo_titulo = 'MEDIUM (Canos Móveis)'
+        else: # HARD
+            velocidade_chao = VELOCIDADE_CANO + 3
+            cano_dificuldade = 'HARD' # Canos intermitentes (invisíveis)
+            modo_titulo = 'HARD (Cano Intermitente)'
+            
+    else: # modo == 'ESPECIAL'
+        # Pássaro é estático em (X, Y)
+        posicao_x_passaro = POSICAO_PASSARO_ESPECIAL
+        velocidade_chao = VELOCIDADE_CANO + 3 
+        cano_dificuldade = 'ESPECIAL_CONTROLE' 
+        modo_titulo = 'ESPECIAL (Controle de Cano)'
     
     passaros = [Passaro(posicao_x_passaro, 350)]
     chao = Chao(730, velocidade_chao)
-    canos = [Cano(700, dificuldade)]
+    canos = [Cano(700, cano_dificuldade)]
     
     pontos = 0
     relogio = pygame.time.Clock()
@@ -481,6 +492,9 @@ def game_loop(tela, dificuldade):
     novo_recorde = False
     nome_jogador = ""
     recorde_salvo = False
+    
+    ajuste_vertical_cano = 0 
+    VELOCIDADE_AJUSTE_CANO = 15 
 
     while rodando:
         relogio.tick(30) 
@@ -492,62 +506,97 @@ def game_loop(tela, dificuldade):
                 sys.exit()
             
             if not game_over:
-                if evento.type == pygame.KEYDOWN and evento.key == pygame.K_SPACE and len(passaros) > 0:
+                # Pássaro só PULA nos modos normais (1, 2 e 3)
+                if modo != 'ESPECIAL' and evento.type == pygame.KEYDOWN and evento.key == pygame.K_SPACE and len(passaros) > 0:
                     passaros[0].pular()
-            else: # Jogo acabou
+
+                # Controle de cano no Modo Especial (4)
+                if modo == 'ESPECIAL':
+                    if evento.type == pygame.KEYDOWN:
+                        if evento.key == pygame.K_UP or evento.key == pygame.K_w:
+                            ajuste_vertical_cano = -VELOCIDADE_AJUSTE_CANO # Move buraco para CIMA
+                        elif evento.key == pygame.K_DOWN or evento.key == pygame.K_s:
+                            ajuste_vertical_cano = VELOCIDADE_AJUSTE_CANO # Move buraco para BAIXO
+                    
+                    if evento.type == pygame.KEYUP:
+                        if evento.key in [pygame.K_UP, pygame.K_w, pygame.K_DOWN, pygame.K_s]:
+                            ajuste_vertical_cano = 0 
+
+            else: # Lógica de Game Over (M, R, Recomeçar)
+                # ... (Lógica de recorde e menu mantida)
                 if evento.type == pygame.KEYDOWN:
-                    if evento.key == pygame.K_r:
-                        game_loop(tela, dificuldade)
+                    if novo_recorde and not recorde_salvo:
+                         if evento.key == pygame.K_RETURN:
+                             if nome_jogador.strip():
+                                 adicionar_recorde(nome_jogador, pontos)
+                             else:
+                                 adicionar_recorde("PLAYER", pontos)
+                             recorde_salvo = True
+                         elif evento.key == pygame.K_BACKSPACE:
+                             nome_jogador = nome_jogador[:-1]
+                         elif len(nome_jogador) < 8:
+                             if evento.unicode.isalnum() or evento.unicode == ' ':
+                                 nome_jogador += evento.unicode.upper()
+                    
+                    elif evento.key == pygame.K_m: 
                         return
                     
-                    if evento.key == pygame.K_RETURN and (not novo_recorde or recorde_salvo):
-                        return 
+                    elif evento.key == pygame.K_r: 
+                        main_menu() 
+                        return
 
-                    if novo_recorde and not recorde_salvo:
-                        if evento.key == pygame.K_RETURN:
-                            if nome_jogador.strip():
-                                adicionar_recorde(nome_jogador, pontos)
-                            else:
-                                adicionar_recorde("PLAYER", pontos)
-                            recorde_salvo = True
-                        elif evento.key == pygame.K_BACKSPACE:
-                            nome_jogador = nome_jogador[:-1]
-                        elif len(nome_jogador) < 8:
-                            if evento.unicode.isalnum() or evento.unicode == ' ':
-                                nome_jogador += evento.unicode.upper()
-
-
+                    else:
+                        game_loop(tela, modo, dificuldade)
+                        return
+                        
         # --- Lógica de Movimento e Colisão ---
         if not game_over:
             if len(passaros) > 0:
-                for passaro in passaros:
-                    passaro.mover()
-
+                
+                # Movimento do pássaro SÓ nos modos normais
+                if modo != 'ESPECIAL':
+                    for passaro in passaros:
+                        passaro.mover()
+                
                 chao.mover()
                 adicionar_cano = False
                 remover_canos = []
                 
                 for cano in canos:
-                    cano.mover()
+                    cano.mover() # Move horizontalmente e, se for MEDIUM/HARD, verticalmente/intermitente
+                    
+                    # Aplica o controle vertical APENAS no Modo Especial
+                    if cano.pode_ser_controlado:
+                        # Limita o ajuste vertical
+                        cano.y_ajuste = max(-200, min(200, cano.y_ajuste + ajuste_vertical_cano))
+
                     for i, passaro in enumerate(passaros):
                         if cano.colidir(passaro):
                             passaros.pop(i)
                         
+                        # Lógica de Contagem de Pontos 
                         if not cano.passou and passaro.x > cano.x + cano.CANO_TOPO.get_width():
                             cano.passou = True
                             adicionar_cano = True
+
                             
                     if cano.x + cano.CANO_TOPO.get_width() < 0:
                         remover_canos.append(cano)
 
                 if adicionar_cano:
                     pontos += 1
-                    canos.append(Cano(600, dificuldade))
+                    # Canos aparecem mais perto no modo Especial para aumentar o ritmo
+                    nova_posicao_cano = 600
+                    if modo == 'ESPECIAL':
+                        nova_posicao_cano = 400 
+
+                    canos.append(Cano(nova_posicao_cano, cano_dificuldade))
                 
                 for cano in remover_canos:
                     canos.remove(cano)
                 
                 for i, passaro in enumerate(passaros):
+                    # Colisão com o chão/teto (funciona em todos os modos, mesmo que no Especial o pássaro não se mova sozinho)
                     if (passaro.y + passaro.imagem.get_height()) > chao.y or passaro.y < 0:
                         passaros.pop(i)
                 
@@ -559,7 +608,7 @@ def game_loop(tela, dificuldade):
         
         # --- Desenho da Tela ---
         if not game_over:
-            desenhar_tela(tela, passaros, canos, chao, pontos)
+            desenhar_tela(tela, passaros, canos, chao, pontos, modo_titulo)
             pygame.display.update()
         else:
             exibir_game_over(tela, pontos, nome_jogador, novo_recorde, recorde_salvo)
