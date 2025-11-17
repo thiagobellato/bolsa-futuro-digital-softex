@@ -3,7 +3,7 @@ from django.utils import timezone
 # Create your models here.
 
 LISTA_CATEGORIAS = (
-    ("AÇÂO", "Aulas"),
+    ("AÇÂO", "Ação"),
     ("ROMANCE", "Romance"),
     ("TERROR", "Terror"),
 )
@@ -16,3 +16,6 @@ class Filme(models.Model):
     categoria = models.CharField(max_length=50, choices=LISTA_CATEGORIAS)
     visualizacoes = models.IntegerField(default=0)
     data_criacao = models.DateTimeField(default=timezone.now)
+    
+    def __str__ (self):
+        return self.titulo
