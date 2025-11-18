@@ -55,7 +55,7 @@ ROOT_URLCONF = 'bfdflix.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +126,11 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+
+# Diretório onde o Django irá armazenar os arquivos de mídia (uploads)
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# URL base para servir esses arquivos de mídia
+MEDIA_URL = '/media/'
