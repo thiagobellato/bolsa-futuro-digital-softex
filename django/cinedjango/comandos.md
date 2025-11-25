@@ -9,10 +9,10 @@ python -m django startapp "filme"
 
 Comandos Git Terminal
 
-git config user.name "SEU-NOME-AQUI 
-git config user.email "SEU-EMAIL-AQUI"
-git config --unset user.name
-git config --unset user.email
+git config user.name "Thiago" 
+git config user.email "tfbellato@hotmail.com"
+git config --unset user.name "Thiago"
+git config --unset user.email "tfbellato@hotmail.com"
 
 git config list
 git clone
