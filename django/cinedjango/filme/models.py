@@ -20,7 +20,7 @@ LISTA_CATEGORIAS = [
 class Filme(models.Model):
     titulo = models.CharField(max_length=100)
     thumb = models.ImageField(upload_to='thumb_filmes/')
-    descricao = models.CharField(max_length=1000)
+    descricao = models.TextField(max_length=1000)
     categoria = models.CharField(max_length=20,choices=LISTA_CATEGORIAS)
     vizualizaoes = models.IntegerField(default=0)
     data_cadastro = models.DateTimeField(default=timezone.now)
