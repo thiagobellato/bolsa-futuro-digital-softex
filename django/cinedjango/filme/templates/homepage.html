@@ -1,0 +1,163 @@
+{% extends 'base.html' %},
+{% block title %}
+  Cine Django
+{% endblock %}
+
+{% block content %}
+  <h1>Bem-vindo ao Cine Django</h1>
+{% endblock %}
+
+{% comment %} <!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cine Django</title>
+  </head>
+  <body style="margin:0;padding:0;background:linear-gradient(to top, #021a0b 60%, #1db954);font-family:Arial, sans-serif;color:#ffffff;">
+    <!-- HEADER -->
+    <header style="display:flex;justify-content:space-between;align-items:center;padding:20px 48px;">
+      <!-- LOGO SIMPLES -->
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="padding:4px 10px;border-radius:6px;border:2px solid #1db954;
+                  background:rgba(0,0,0,0.4);box-shadow:0 0 8px rgba(0,0,0,0.6);">
+          <span style="font-size:1.2rem;font-weight:bold;color:#1db954;letter-spacing:2px;">CINE</span>
+          <span style="font-size:1.2rem;font-weight:bold;color:#ffffff;">DJANGO</span>
+        </div>
+        <span style="font-size:0.75rem;color:#bdfad6;text-transform:uppercase;">Stream de faroeste sem limites</span>
+      </div>
+
+      <a href="#planos" style="background:#0b3d20;color:#ffffff;padding:8px 20px;border-radius:20px;
+              text-decoration:none;font-weight:bold;border:1px solid #1db954;">Entrar</a>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <section style="text-align:center;margin-top:60px;padding:0 16px;">
+      <h2 style="font-size:3rem;margin-bottom:16px;">Filmes, séries e muito mais.</h2>
+      <h3 style="font-size:2rem;margin-bottom:16px;color:#c4fcd4;">Limites… só se a polícia descobrir.</h3>
+      <h4 style="font-size:1.2rem;font-weight:400;margin-bottom:30px;color:#e2ffea;">Assista onde quiser. Cancelamento gera multa (leia as letras miúdas!).</h4>
+
+      <form style="margin-top:16px;display:inline-flex;flex-wrap:wrap;justify-content:center;">
+        <input type="email" placeholder="Email" style="padding:12px;width:280px;max-width:80vw;border:none;outline:none;
+                    border-radius:4px 0 0 4px;font-size:1rem;" />
+        <button type="submit" style="padding:12px 24px;border:none;background:#1db954;color:#ffffff;
+                     font-size:1rem;border-radius:0 4px 4px 0;cursor:pointer;font-weight:bold;">Vamos lá</button>
+      </form>
+
+      <p style="margin-top:12px;font-size:0.85rem;color:#c4fcd4;">Ao clicar em “Vamos lá”, você aceita vender sua alma cinéfila para o Cine Django.</p>
+    </section>
+
+    <!-- FILMES EM DESTAQUE -->
+    <section style="margin-top:60px;padding:0 24px 20px 24px;">
+      <h2 style="font-size:1.6rem;margin-bottom:12px;">Em destaque hoje</h2>
+      <div style="display:flex;overflow-x:auto;gap:16px;padding-bottom:8px;">
+        <!-- CARD 1 -->
+        <div style="min-width:150px;height:220px;border-radius:8px;
+                  background:linear-gradient(145deg,#0f3b20,#1db954);
+                  box-shadow:0 0 10px rgba(0,0,0,0.7);position:relative;">
+          <div style="position:absolute;bottom:8px;left:8px;right:8px;">
+            <h3 style="margin:0 0 4px 0;font-size:1rem;">Django Sem Limites</h3>
+            <p style="margin:0;font-size:0.75rem;color:#d4ffe6;">Clássico faroeste com contrato suspeito e muita poeira.</p>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div style="min-width:150px;height:220px;border-radius:8px;
+                  background:linear-gradient(145deg,#062214,#17a84a);
+                  box-shadow:0 0 10px rgba(0,0,0,0.7);position:relative;">
+          <div style="position:absolute;bottom:8px;left:8px;right:8px;">
+            <h3 style="margin:0 0 4px 0;font-size:1rem;">Velho Oeste Verde</h3>
+            <p style="margin:0;font-size:0.75rem;color:#d4ffe6;">Xerife, bandidos e um cacto que vê tudo.</p>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div style="min-width:150px;height:220px;border-radius:8px;
+                  background:linear-gradient(145deg,#04160d,#23c565);
+                  box-shadow:0 0 10px rgba(0,0,0,0.7);position:relative;">
+          <div style="position:absolute;bottom:8px;left:8px;right:8px;">
+            <h3 style="margin:0 0 4px 0;font-size:1rem;">Contrato de Sangue</h3>
+            <p style="margin:0;font-size:0.75rem;color:#d4ffe6;">Quem tenta cancelar, ganha continuação.</p>
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div style="min-width:150px;height:220px;border-radius:8px;
+                  background:linear-gradient(145deg,#082818,#1db954);
+                  box-shadow:0 0 10px rgba(0,0,0,0.7);position:relative;">
+          <div style="position:absolute;bottom:8px;left:8px;right:8px;">
+            <h3 style="margin:0 0 4px 0;font-size:1rem;">A Fuga do Sofá</h3>
+            <p style="margin:0;font-size:0.75rem;color:#d4ffe6;">Herói tenta levantar pra viver a vida real.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANOS (mantidos) -->
+    <section id="planos" style="margin-top:40px;padding:0 32px 40px 32px;">
+      <h2 style="text-align:center;font-size:2rem;margin-bottom:24px;">Planos sem vergonha</h2>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;">
+        <div style="background:#062214;border-radius:8px;padding:16px 20px;
+                  width:260px;box-shadow:0 0 10px rgba(0,0,0,0.5);">
+          <h3 style="margin-top:0;margin-bottom:8px;font-size:1.4rem;color:#1db954;">Básico Desconfiado</h3>
+          <p style="margin:4px 0;font-size:0.95rem;">• Qualidade boa o suficiente pra polícia não ver detalhes.</p>
+          <p style="margin:4px 0;font-size:0.95rem;">• 1 tela por vez.</p>
+          <p style="margin:4px 0;font-size:0.95rem;">• Multa leve se cancelar.</p>
+        </div>
+
+        <div style="background:#062214;border-radius:8px;padding:16px 20px;
+                  width:260px;box-shadow:0 0 10px rgba(0,0,0,0.7);border:1px solid #1db954;">
+          <h3 style="margin-top:0;margin-bottom:8px;font-size:1.4rem;color:#50ff8b;">Django Fanático</h3>
+          <p style="margin:4px 0;font-size:0.95rem;">• Full HD pra ver cada gota de poeira do faroeste.</p>
+          <p style="margin:4px 0;font-size:0.95rem;">• 3 telas simultâneas.</p>
+          <p style="margin:4px 0;font-size:0.95rem;">• Multa moderada se fugir do contrato.</p>
+        </div>
+
+        <div style="background:#062214;border-radius:8px;padding:16px 20px;
+                  width:260px;box-shadow:0 0 10px rgba(0,0,0,0.5);">
+          <h3 style="margin-top:0;margin-bottom:8px;font-size:1.4rem;color:#1db954;">Fora da Lei</h3>
+          <p style="margin:4px 0;font-size:0.95rem;">• 4K, som estrondoso e zero vergonha.</p>
+          <p style="margin:4px 0;font-size:0.95rem;">• Telas ilimitadas (até a polícia bater).</p>
+          <p style="margin:4px 0;font-size:0.95rem;">• Multa pesada se tentar cancelar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEPOIMENTOS (mantidos) -->
+    <section style="background:#04160d;padding:40px 24px 60px 24px;">
+      <h2 style="text-align:center;font-size:2rem;margin-bottom:24px;">Depoimentos de usuários</h2>
+
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:1000px;margin:0 auto;">
+        <div style="background:#062214;border-radius:8px;padding:16px 20px;
+                  width:280px;box-shadow:0 0 8px rgba(0,0,0,0.4);">
+          <p style="margin:0 0 8px 0;font-size:0.9rem;color:#c4fcd4;">“Achei que era golpe, mas agora não consigo mais sair do sofá.”</p>
+          <p style="margin:0;font-size:0.8rem;color:#7be6a3;">— Joana, usuária feliz (e viciada)</p>
+        </div>
+
+        <div style="background:#062214;border-radius:8px;padding:16px 20px;
+                  width:280px;box-shadow:0 0 8px rgba(0,0,0,0.4);">
+          <p style="margin:0 0 8px 0;font-size:0.9rem;color:#c4fcd4;">“Assinei só por curiosidade… agora minha curiosidade é saber quanto vai ser a multa quando eu tentar sair.”</p>
+          <p style="margin:0;font-size:0.8rem;color:#7be6a3;">— Carlos, corajoso porém preso ao contrato</p>
+        </div>
+
+        <div style="background:#220606;border-radius:8px;padding:16px 20px;
+                  width:280px;box-shadow:0 0 8px rgba(0,0,0,0.6);border:1px solid #ff6b6b;">
+          <p style="margin:0 0 8px 0;font-size:0.9rem;color:#ffdada;">“Não li as letras miúdas. Agora descubro que até minha pipoca entrou como garantia.”</p>
+          <p style="margin:0;font-size:0.8rem;color:#ff9a9a;">— Marina, levemente arrependida</p>
+        </div>
+
+        <div style="background:#220606;border-radius:8px;padding:16px 20px;
+                  width:280px;box-shadow:0 0 8px rgba(0,0,0,0.6);border:1px solid #ff6b6b;">
+          <p style="margin:0 0 8px 0;font-size:0.9rem;color:#ffdada;">“Tentei cancelar. Eles ofereceram mais filmes em vez de liberdade.”</p>
+          <p style="margin:0;font-size:0.8rem;color:#ff9a9a;">— Paulo, oficialmente insatisfeito</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer style="text-align:center;margin-top:40px;color:#88a892;font-size:0.9rem;padding-bottom:30px;">
+      <p style="margin:0 0 8px 0;">Dúvidas? Ligue para o Softex</p>
+      <p style="margin:0;font-size:0.8rem;">Cine Django © 2025 • Qualquer semelhança com serviços reais é pura coincidência (ou não).</p>
+    </footer>
+  </body>
+</html> {% endcomment %}
